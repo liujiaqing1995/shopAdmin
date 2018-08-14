@@ -1,22 +1,22 @@
 <template>
   <div class="login">
     <el-form ref="form" status-icon :rules="rules" :model="form" label-width="80px">
-      <img src="../assets/1.jpg">
+      <img src="../assets/1.jpg" alt="">
       <el-form-item label="用户名" prop="username">
-        <el-input v-model="form.username"></el-input>
+          <el-input v-model="form.username"></el-input>
       </el-form-item>
       <el-form-item label="密码" prop="password">
-        <el-input type="password" v-model="form.password"></el-input>
+          <el-input type="password" v-model="form.password" @keyup.enter.native="login"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="login">登录</el-button>
-        <el-button @click="reset">重置</el-button>
+          <el-button type="primary" @click="login">登录</el-button>
+          <el-button @click="reset">重置</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
+
 <script>
-// 导入axios
 import axios from 'axios'
 export default {
   data () {
@@ -48,18 +48,15 @@ export default {
           }).then(res => {
             if (res.data.meta.status === 200) {
               this.$message({
-                showClose: true,
                 message: '恭喜你，登录成功',
                 type: 'success'
               })
-              // 跳转到主页面
+              // 保存token
+              localStorage.setItem('myToken', res.data.data.token)
+              // 跳转到首页
               this.$router.push('home')
             } else {
-              this.$message({
-                showClose: true,
-                message: '用户名或者密码错误',
-                type: 'error'
-              })
+              this.$message.error('用户名或者密码错误')
             }
           })
         } else {
@@ -82,8 +79,8 @@ export default {
   overflow: hidden;
   .el-form {
     width: 400px;
-    margin: 200px auto;
     background-color: #fff;
+    margin: 200px auto;
     padding: 75px 40px 15px 40px;
     border-radius: 20px;
     position: relative;
@@ -94,7 +91,7 @@ export default {
       position: absolute;
       left: 50%;
       top: -30%;
-      transform: translate(-50%,30%)
+      transform: translate(-50%,30%);
     }
   }
 }

@@ -1,28 +1,28 @@
 <template>
-  <div id="app">
-    <router-view/>
-  </div>
+    <div id="app">
+        <router-view></router-view>
+    </div>
 </template>
 
 <script>
-export default {
-
-}
 </script>
 
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  list-style: none;
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
-html,
-body {
-  width: 100%;
-  height: 100%;
+ul,ol{
+    list-style: none;
 }
-#app {
-  width: 100%;
-  height: 100%;
+
+html,body{
+    width: 100%;
+    height: 100%;
+}
+#app{
+    width: 100%;
+    height: 100%;
 }
 </style>
