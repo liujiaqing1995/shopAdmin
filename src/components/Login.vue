@@ -17,7 +17,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 export default {
   data () {
     return {
@@ -39,26 +38,25 @@ export default {
   },
   methods: {
     login () {
-      this.$refs.form.validate((valid) => {
+      this.$refs.form.validate(async (valid) => {
         if (valid) {
-          axios({
+          const res = await this.axios({
             method: 'post',
             url: 'http://localhost:8888/api/private/v1/login',
             data: this.form
-          }).then(res => {
-            if (res.data.meta.status === 200) {
-              this.$message({
-                message: '恭喜你，登录成功',
-                type: 'success'
-              })
-              // 保存token
-              localStorage.setItem('myToken', res.data.data.token)
-              // 跳转到首页
-              this.$router.push('home')
-            } else {
-              this.$message.error('用户名或者密码错误')
-            }
           })
+          if (res.data.meta.status === 200) {
+            this.$message({
+              message: '恭喜你，登录成功',
+              type: 'success'
+            })
+            // 保存token
+            localStorage.setItem('myToken', res.data.data.token)
+            // 跳转到首页
+            this.$router.push('home')
+          } else {
+            this.$message.error('用户名或者密码错误')
+          }
         } else {
           return false
         }

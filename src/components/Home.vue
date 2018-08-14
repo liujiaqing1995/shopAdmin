@@ -72,24 +72,25 @@
 export default {
 
   methods: {
-    logout () {
-      this.$confirm('你确定要退出系统吗?', '温馨提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
+    async logout () {
+      try {
+        await this.$confirm('你确定要退出系统吗?', '温馨提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
         // 1. 删除localStorage中的myToken
         localStorage.removeItem('myToken')
         // 2. 跳转到登录组件
         this.$router.push('login')
         // 3. 给一个退出的提示
         this.$message.success('退出成功了')
-      }).catch(() => {
+      } catch (e) {
         this.$message({
           type: 'info',
           message: '退出取消了'
         })
-      })
+      }
     },
     handleOpen (key, keyPath) {
       console.log(key, keyPath)

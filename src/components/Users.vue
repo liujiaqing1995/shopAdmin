@@ -198,37 +198,36 @@ export default {
       this.addDialogVisible = true
     },
     // 添加用户
-    async addUser () {
+    addUser () {
       // 二次校验表单
-      this.$refs.addForm.validate((valid) => {
+      this.$refs.addForm.validate(async (valid) => {
         if (valid) {
           // 发送ajax
           // 如果是get请求的参数，要不就拼到url后面
           // 使用params参数，不能使用data
           // 如果是post请求的参数，不要拼到url后面
           // 使用data参数
-          this.axios({
+          const res = await this.axios({
             method: 'post',
             url: 'users',
             data: this.addForm
-          }).then(res => {
-            const {meta: {status}} = res.data
-            if (status === 201) {
-              // 关闭对话框
-              this.addDialogVisible = false
-              // 让按钮回到最后显示
-              this.total++
-              this.pagenum = Math.ceil(this.total / this.pagesize)
-              // 重新渲染页面
-              this.getUserList()
-              // 重置表单
-              this.$refs.addForm.resetFields()
-              // 显示提示信息
-              this.$message.success('添加用户成功!')
-            } else {
-              this.$message.success('添加用户失败!')
-            }
           })
+          const {meta: {status}} = res.data
+          if (status === 201) {
+            // 关闭对话框
+            this.addDialogVisible = false
+            // 让按钮回到最后显示
+            this.total++
+            this.pagenum = Math.ceil(this.total / this.pagesize)
+            // 重新渲染页面
+            this.getUserList()
+            // 重置表单
+            this.$refs.addForm.resetFields()
+            // 显示提示信息
+            this.$message.success('添加用户成功!')
+          } else {
+            this.$message.success('添加用户失败!')
+          }
         } else {
           return false
         }
@@ -236,35 +235,34 @@ export default {
     },
     // 删除用户
     async delUser (user) {
-      this.$confirm('确定删除该用户吗?', '温馨提示', {
+      await this.$confirm('确定删除该用户吗?', '温馨提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then(() => {
-        // 发送请求
-        this.axios.delete(`users/${user.id}`)
-          .then(res => {
-            console.log(res.data)
-            const {meta: {status}} = res.data
-            if (status === 200) {
-              // 如果当前页只有一条数据了，需要让页数减1
-              if (this.userData.length === 1) {
-                this.pagenum--
-              }
-              // 重新渲染页面
-              this.getUserList()
-              this.$message({
-                type: 'success',
-                message: '删除成功!'
-              })
-            }
+      })
+      // 发送请求
+      try {
+        const res = await this.axios.delete(`users/${user.id}`)
+        console.log(res.data)
+        const {meta: {status}} = res.data
+        if (status === 200) {
+          // 如果当前页只有一条数据了，需要让页数减1
+          if (this.userData.length === 1) {
+            this.pagenum--
+          }
+          // 重新渲染页面
+          this.getUserList()
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
           })
-      }).catch(() => {
+        }
+      } catch (e) {
         this.$message({
           type: 'info',
           message: '已取消删除'
         })
-      })
+      }
     },
     // 显示修改的对话框
     showEditDialog (user) {
@@ -276,16 +274,16 @@ export default {
       this.editForm.userId = user.id
     },
     // 确定修改用户
-    async editUser () {
+    editUser () {
       // 二次校验表单
-      this.$refs.editForm.validate((valid) => {
+      this.$refs.editForm.validate(async (valid) => {
         if (valid) {
           // 发送ajax
           // 如果是get请求的参数，要不就拼到url后面
           // 使用params参数，不能使用data
           // 如果是post请求的参数，不要拼到url后面
           // 使用data参数
-          this.axios({
+          const res = await this.axios({
             method: 'put',
             url: `users/${this.editForm.userId}`,
             data: {
@@ -293,22 +291,21 @@ export default {
               email: this.editForm.email,
               mobile: this.editForm.mobile
             }
-          }).then(res => {
-            console.log(res)
-            const {meta: {status}} = res.data
-            if (status === 200) {
-              // 关闭对话框
-              this.editDialogVisible = false
-              // 重新渲染页面
-              this.getUserList()
-              // 重置表单
-              this.$refs.editForm.resetFields()
-              // 显示提示信息
-              this.$message.success('修改用户成功!')
-            } else {
-              this.$message.success('修改用户失败!')
-            }
           })
+          console.log(res)
+          const {meta: {status}} = res.data
+          if (status === 200) {
+            // 关闭对话框
+            this.editDialogVisible = false
+            // 重新渲染页面
+            this.getUserList()
+            // 重置表单
+            this.$refs.editForm.resetFields()
+            // 显示提示信息
+            this.$message.success('修改用户成功!')
+          } else {
+            this.$message.success('修改用户失败!')
+          }
         } else {
           return false
         }
