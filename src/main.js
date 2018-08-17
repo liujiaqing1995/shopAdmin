@@ -11,12 +11,22 @@ import 'element-ui/lib/theme-chalk/index.css'
 // 使用element-ui
 Vue.use(ElementUI)
 
+// 设置axios请求拦截
+axios.interceptors.request.use(function (config) {
+  // 在发送请求之前配置baseURL和headers
+  config.baseURL = 'http://localhost:8888/api/private/v1/'
+  config.headers.Authorization = localStorage.getItem('myToken')
+  return config
+}, function (error) {
+  // 对请求错误做些什么
+  return Promise.reject(error)
+})
+
 // 给Vue原型加上axios事件
 Vue.prototype.axios = axios
 // axios默认设置
-axios.defaults.baseURL = 'http://localhost:8888/api/private/v1/'
-axios.defaults.headers.common['Authorization'] = localStorage.getItem('myToken')
-
+// axios.defaults.baseURL = 'http://localhost:8888/api/private/v1/'
+// axios.defaults.headers.common['Authorization'] = localStorage.getItem('myToken')
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

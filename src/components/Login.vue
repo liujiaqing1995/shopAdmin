@@ -55,7 +55,7 @@ export default {
             // 跳转到首页
             this.$router.push('home')
           } else {
-            this.$message.error('用户名或者密码错误')
+            this.$message.error(res.data.meta.msg)
           }
         } else {
           return false

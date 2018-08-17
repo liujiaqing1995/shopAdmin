@@ -2,9 +2,10 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '@/components/Login'
 import Home from '@/components/Home'
-import Users from '@/components/Users'
-import Rights from '@/components/Rights'
-import Roles from '@/components/Roles'
+import Users from '@/components/users/Users'
+import Rights from '@/components/rights/Rights'
+import Roles from '@/components/rights/Roles'
+import Categories from '@/components/categories/Categories'
 
 // 使用组件的插件
 Vue.use(Router)
@@ -13,7 +14,7 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      redirect: '/login'
+      redirect: '/home'
     },
     {
       path: '/login',
@@ -39,6 +40,11 @@ const router = new Router({
           path: '/roles',
           name: 'roles',
           component: Roles
+        },
+        {
+          path: '/categories',
+          name: 'categories',
+          component: Categories
         }
       ]
     }
