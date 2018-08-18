@@ -25,7 +25,7 @@
           <el-menu
             unique-opened
             router
-            :default-active="$route.path"
+            :default-active="$route.path.split('-')[0]"
             class="el-menu-vertical-demo"
             @open="handleOpen"
             @close="handleClose"
